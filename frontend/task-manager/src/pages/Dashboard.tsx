@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import type { Task } from '../types';
 import TaskForm from '../components/TaskForm';
 import TaskCard from '../components/TaskCard';
+import api from "../services/api";
 
 const Dashboard: React.FC = () => {
   const authContext = useContext(AuthContext);
@@ -14,7 +15,7 @@ const Dashboard: React.FC = () => {
   const fetchTasks = useCallback(async () => {
     if (!authContext?.user?.token) return;
     try {
-      const { data } = await axios.get<Task[]>('https://task-manager-api-bz39.onrender.com/api/tasks', {
+      const { data } = await api.get('/tasks', {
         headers: { Authorization: `Bearer ${authContext.user.token}` }
       });
       setTasks(data);
@@ -29,7 +30,7 @@ const Dashboard: React.FC = () => {
 
   const handleAddTask = async (title: string) => {
     try {
-      const { data } = await axios.post<Task>('https://task-manager-api-bz39.onrender.com/api/tasks', { title }, {
+      const { data } = await api.post('/tasks', { title }, {
         headers: { Authorization: `Bearer ${authContext!.user!.token}` }
       });
       setTasks(prev => [data, ...prev]);
@@ -41,7 +42,7 @@ const Dashboard: React.FC = () => {
   const handleDelete = async (id: string) => {
     setTasks(prev => prev.filter(t => t._id !== id));
     try {
-      await axios.delete(`https://task-manager-api-bz39.onrender.com/api/tasks/${id}`, {
+      await api.delete(`/tasks/${id}`, {
         headers: { Authorization: `Bearer ${authContext!.user!.token}` }
       });
     } catch (error) {
@@ -54,7 +55,7 @@ const Dashboard: React.FC = () => {
     const newStatus = currentStatus === 'Pending' ? 'Completed' : 'Pending';
     setTasks(prev => prev.map(t => t._id === id ? { ...t, status: newStatus } : t));
     try {
-      const { data } = await axios.put<Task>(`https://task-manager-api-bz39.onrender.com/api/tasks/${id}`, { status: newStatus }, {
+      const { data } = await api.put<Task>(`/tasks/${id}`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${authContext!.user!.token}` }
       });
       setTasks(prev => prev.map(t => t._id === id ? data : t));

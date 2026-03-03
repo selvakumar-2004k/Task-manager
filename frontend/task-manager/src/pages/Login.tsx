@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
+// import api from "../services/api"; 
 
 const Login: React.FC = () => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -15,30 +16,28 @@ const Login: React.FC = () => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!authContext) return;
-    setError('');
-    setSuccess('');
-    setLoading(true);
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!authContext) return;
 
-    try {
-      if (isRegistering) {
-        await axios.post('https://task-manager-api-bz39.onrender.com', { name, email, password });
-        setSuccess('Account created! You can now sign in.');
-        setIsRegistering(false);
-        setName('');
-        setPassword('');
-      } else {
-        await authContext.login(email, password);
-        navigate('/');
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
+  setError('');
+  setSuccess('');
+  setLoading(true);
+
+  try {
+    if (isRegistering) {
+      await authContext.register(name, email, password);
+      navigate('/');
+    } else {
+      await authContext.login(email, password);
+      navigate('/');
     }
-  };
+  } catch (err: any) {
+    setError(err.response?.data?.message || 'Something went wrong.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const switchMode = () => {
     setIsRegistering(!isRegistering);

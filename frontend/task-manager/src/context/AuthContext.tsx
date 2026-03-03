@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, type ReactNode } from 'react';
 import axios from 'axios';
 import type { User } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://task-manager-api-bz39.onrender.com';
 
 interface AuthContextType {
   user: User | null;
