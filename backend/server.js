@@ -9,20 +9,14 @@ router.post('/register', registerUser); // Results in /api/users/register
 
 
 
+const express = require('express');
+const cors = require('cors');
+
 const app = express();
 
-// Middleware
-// Replace app.use(cors()); with this:
-app.use(cors({
-  
-  origin: ['https://task-manager-zt3p.onrender.com', 'http://localhost:5173'], 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
-app.use(express.json()); // Allows parsing of JSON data in the body
-app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use(express.json());
 
-// Routes
 app.use('/api/users', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
