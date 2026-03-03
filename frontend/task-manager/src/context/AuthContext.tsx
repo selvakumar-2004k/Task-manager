@@ -20,7 +20,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string) => {
     try {
-      const { data } = await axios.post<User>('http://localhost:5000/api/users/login', { email, password });
+      const { data } = await axios.post<User>('https://task-manager-api-bz39.onrender.com', { email, password });
       localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
     } catch (error) {
