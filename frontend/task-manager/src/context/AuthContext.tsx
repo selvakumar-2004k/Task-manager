@@ -2,6 +2,8 @@ import { createContext, useState, useEffect, type ReactNode } from 'react';
 import axios from 'axios';
 import type { User } from '../types';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post('https://task-manager-api-bz39.onrender.com/api/users/login', { email, password });
+      const response =  await axios.post(`${API_URL}/api/users/login`, { email, password });
       const data = response.data;
       localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
@@ -34,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Added this function to handle registration
   const register = async (name: string, email: string, password: string) => {
     try {
-      const response = await axios.post('https://task-manager-api-bz39.onrender.com/api/users/register', { name, email, password });
+      const response =await axios.post(`${API_URL}/api/users/register`, { name, email, password });
       const data = response.data;
       localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
