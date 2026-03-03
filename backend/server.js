@@ -1,26 +1,34 @@
-// Main server file
+// backend/server.js
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-// routes/authRoutes.js
-router.post('/login', loginUser); // Results in /api/users/login
-router.post('/register', registerUser); // Results in /api/users/register
 
-
-
-const express = require('express');
-const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 
 const app = express();
 
+/*
+  Since you are using JWT in Authorization header,
+  you DO NOT need credentials: true
+*/
 app.use(cors());
-app.use(express.json());
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// Routes
 app.use('/api/users', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
-// Database connection and server initialization
+// Optional root route
+app.get('/', (req, res) => {
+  res.send('Task Manager API Running 🚀');
+});
+
+// Database connection
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGO_URI)
