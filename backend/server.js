@@ -3,16 +3,19 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+// routes/authRoutes.js
+router.post('/login', loginUser); // Results in /api/users/login
+router.post('/register', registerUser); // Results in /api/users/register
 
-const authRoutes = require('./routes/authRoutes');
-const taskRoutes = require('./routes/taskRoutes');
+
 
 const app = express();
 
 // Middleware
 // Replace app.use(cors()); with this:
 app.use(cors({
-  origin: ['https://task-manager-zt3p.onrender.com', 'http://localhost:5173'], // Add your Vercel URL and local Vite URL
+  
+  origin: ['https://task-manager-zt3p.onrender.com', 'http://localhost:5173'], 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));

@@ -1,9 +1,9 @@
-// Authentication routes
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser } = require('../controllers/authController');
+const { loginUser, registerUser } = require('../controllers/authController');
 
+// The path here should be just '/login', NOT '/api/users/login'
+router.post('/login', loginUser); 
 router.post('/register', registerUser);
-router.post('/login', loginUser);
 
 module.exports = router;

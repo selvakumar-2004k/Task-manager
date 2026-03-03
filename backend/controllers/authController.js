@@ -1,11 +1,11 @@
-import User from '../models/User.js'; // Note the .js extension is required in ESM
-import jwt from 'jsonwebtoken';
+const User = require('../models/User'); // Removed .js and used require
+const jwt = require('jsonwebtoken');
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
-export const registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -29,12 +29,12 @@ export const registerUser = async (req, res) => {
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error) {
-    console.error(error); // This will help you see the error in the terminal
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
 
-export const loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -53,3 +53,6 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Use module.exports instead of export const
+module.exports = { registerUser, loginUser };
