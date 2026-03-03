@@ -10,7 +10,12 @@ const taskRoutes = require('./routes/taskRoutes');
 const app = express();
 
 // Middleware
-app.use(cors());
+// Replace app.use(cors()); with this:
+app.use(cors({
+  origin: ['https://task-manager-zt3p.onrender.com', 'http://localhost:5173'], // Add your Vercel URL and local Vite URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json()); // Allows parsing of JSON data in the body
 app.use(express.urlencoded({ extended: false }));
 
