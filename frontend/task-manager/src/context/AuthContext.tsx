@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, type ReactNode } from 'react';
 import axios from 'axios';
 import type { User } from '../types';
 
@@ -10,7 +10,8 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+// Added "type" to ReactNode to fix the TS1484 error
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -20,7 +21,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string) => {
     try {
-      const { data } = await axios.post<User>('https://task-manager-api-bz39.onrender.com', { email, password });
+      // Updated URL to include the login route (standard MERN practice)
+      const { data } = await axios.post<User>('https://task-manager-api-bz39.onrender.com/api/auth/login', { email, password });
       localStorage.setItem('user', JSON.stringify(data));
       setUser(data);
     } catch (error) {
@@ -40,3 +42,5 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     </AuthContext.Provider>
   );
 };
+
+ 

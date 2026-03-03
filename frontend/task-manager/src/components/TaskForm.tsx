@@ -6,7 +6,7 @@ interface TaskFormProps {
 
 const TaskForm: React.FC<TaskFormProps> = ({ onAdd }) => {
   const [title, setTitle] = useState('');
-  const [focused, setFocused] = useState(false);
+  // Removed 'focused' state to fix TS6133: value is never read
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -128,8 +128,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAdd }) => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
+              // Removed onFocus and onBlur handlers that were setting 'focused'
               placeholder="What needs to be done?"
               className="task-form-input"
               autoComplete="off"

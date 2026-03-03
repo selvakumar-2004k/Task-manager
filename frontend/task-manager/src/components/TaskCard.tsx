@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 
+// Added this interface to fix the TS2304 error
+interface Task {
+  _id: string;
+  title: string;
+  status: string;
+}
+
 interface TaskCardProps {
   task: Task;
   onDelete: (id: string) => void;
@@ -68,7 +75,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onDelete, onToggleStatus }) =
           align-items: center;
           justify-content: center;
           transition: all 0.2s ease;
-          flex-shrink: 0;
         }
 
         .task-check:hover {
@@ -152,7 +158,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onDelete, onToggleStatus }) =
       `}</style>
 
       <div className={`task-card${isCompleted ? ' is-completed' : ''}${deleting ? ' removing' : ''}`}>
-        {/* Clickable check circle */}
         <div className="task-check" onClick={() => onToggleStatus(task._id, task.status)} title={isCompleted ? 'Mark pending' : 'Mark complete'}>
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#0a0e1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="1.5 6 4.5 9 10.5 3" />
