@@ -14,7 +14,7 @@ const Dashboard: React.FC = () => {
   const fetchTasks = useCallback(async () => {
     if (!authContext?.user?.token) return;
     try {
-      const { data } = await axios.get<Task[]>('http://localhost:5000/api/tasks', {
+      const { data } = await axios.get<Task[]>('https://task-manager-api-bz39.onrender.com/api/tasks', {
         headers: { Authorization: `Bearer ${authContext.user.token}` }
       });
       setTasks(data);
@@ -29,7 +29,7 @@ const Dashboard: React.FC = () => {
 
   const handleAddTask = async (title: string) => {
     try {
-      const { data } = await axios.post<Task>('http://localhost:5000/api/tasks', { title }, {
+      const { data } = await axios.post<Task>('https://task-manager-api-bz39.onrender.com/api/tasks', { title }, {
         headers: { Authorization: `Bearer ${authContext!.user!.token}` }
       });
       setTasks(prev => [data, ...prev]);
@@ -41,7 +41,7 @@ const Dashboard: React.FC = () => {
   const handleDelete = async (id: string) => {
     setTasks(prev => prev.filter(t => t._id !== id));
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+      await axios.delete(`https://task-manager-api-bz39.onrender.com/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${authContext!.user!.token}` }
       });
     } catch (error) {
@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
     const newStatus = currentStatus === 'Pending' ? 'Completed' : 'Pending';
     setTasks(prev => prev.map(t => t._id === id ? { ...t, status: newStatus } : t));
     try {
-      const { data } = await axios.put<Task>(`http://localhost:5000/api/tasks/${id}`, { status: newStatus }, {
+      const { data } = await axios.put<Task>(`https://task-manager-api-bz39.onrender.com/api/tasks/${id}`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${authContext!.user!.token}` }
       });
       setTasks(prev => prev.map(t => t._id === id ? data : t));

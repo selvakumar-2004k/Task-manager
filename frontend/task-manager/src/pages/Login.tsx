@@ -24,7 +24,7 @@ const Login: React.FC = () => {
 
     try {
       if (isRegistering) {
-        await axios.post('http://localhost:5000/api/users/register', { name, email, password });
+        await axios.post('https://task-manager-api-bz39.onrender.com', { name, email, password });
         setSuccess('Account created! You can now sign in.');
         setIsRegistering(false);
         setName('');
